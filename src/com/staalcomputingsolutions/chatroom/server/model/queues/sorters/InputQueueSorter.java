@@ -21,7 +21,8 @@ public class InputQueueSorter implements Runnable{
     private static OutputQueue outputQueue;
     private static SystemQueue systemQueue;
     private static InputQueueSorter instance = null;
-    
+    private Thread iqsThread;
+    private boolean started = false;
     private InputQueueSorter(){
         inputQueue = InputQueue.getInstance();
         outputQueue = OutputQueue.getInstance();
@@ -54,6 +55,23 @@ public class InputQueueSorter implements Runnable{
                 
             }
         }
+    }
+    
+    public void start(){
+        iqsThread = new Thread(this);
+        iqsThread.start();
+        started = true;
+    }
+    
+    public void stop(){
+        iqsThread.stop();
+        iqsThread = null;
+        started = false;
+    }
+    
+    public void restart(){
+        stop();
+        start();
     }
     
 }

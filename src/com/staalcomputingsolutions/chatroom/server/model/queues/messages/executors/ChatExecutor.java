@@ -20,6 +20,8 @@ public class ChatExecutor implements Runnable{
     private final static OutputQueue outputQueue;
     private final static ClientManager clientManager;
     private static ChatExecutor instance = null;
+    private Thread ceThread;
+    private boolean started = false;
     
     static{
         outputQueue = OutputQueue.getInstance();
@@ -53,6 +55,23 @@ public class ChatExecutor implements Runnable{
                 }
             }
         }
+    }
+    
+    public void start(){
+        ceThread = new Thread(this);
+        ceThread.start();
+        started = true;
+    }
+    
+    public void stop(){
+        ceThread.stop();
+        ceThread = null;
+        started = false;
+    }
+    
+    public void restart(){
+        stop();
+        start();
     }
     
 }

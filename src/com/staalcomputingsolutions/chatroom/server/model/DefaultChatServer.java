@@ -23,8 +23,6 @@ public class DefaultChatServer implements Server {
 
     private boolean suspended = false;
 
-    private Thread iqsThread, seThread, ceThread;
-    
     /**
      * Internal constructor, do not use directly. Use {@link ChatServerFactory}
      * instead
@@ -41,16 +39,13 @@ public class DefaultChatServer implements Server {
             // The chat server already been stopped, can not be restarted.
             throw new IllegalStateException("ChatServer has been stopped. Restart is not supported");
         } else {
-            iqsThread = new Thread(serverContext.getInputQueueSorter());
-            seThread = new Thread(serverContext.getSystemExecutor());
-            ceThread = new Thread(serverContext.getChatExecutor());
             try {
                 serverContext.setListener(ListenerFactory.createListener());
-                started = true;
-                iqsThread.start();
-                seThread.start();
-                ceThread.start();
+                serverContext.getInputQueueSorter().start();
+                serverContext.getSystemExecutor().start();
+                serverContext.getChatExecutor().start();
                 serverContext.getListener().start(serverContext);
+                started = true;
             } catch (ChatServerConfigurationException ex) {
                 java.util.logging.Logger.getLogger(DefaultChatServer.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -59,9 +54,9 @@ public class DefaultChatServer implements Server {
 
     @Override
     public void stop() {
-        iqsThread.stop();
-        seThread.stop();
-        ceThread.stop();
+        serverContext.getInputQueueSorter().stop();
+        serverContext.getSystemExecutor().stop();
+        serverContext.getChatExecutor().stop();
         serverContext.getListener().stop();
         started = false;
     }
@@ -73,29 +68,27 @@ public class DefaultChatServer implements Server {
 
     @Override
     public void suspend() {
-        iqsThread.stop();
-        seThread.stop();
-        ceThread.stop();
+        serverContext.getInputQueueSorter().stop();
+        serverContext.getSystemExecutor().stop();
+        serverContext.getChatExecutor().stop();
         serverContext.getListener().suspend();
         suspended = true;
     }
 
     @Override
     public void resume() {
-            iqsThread = new Thread(serverContext.getInputQueueSorter());
-            seThread = new Thread(serverContext.getSystemExecutor());
-            ceThread = new Thread(serverContext.getChatExecutor());
-            try {
-                serverContext.setListener(ListenerFactory.createListener());
-                started = true;
-                iqsThread.start();
-                seThread.start();
-                ceThread.start();
-                serverContext.getListener().resume();
-            } catch (ChatServerConfigurationException ex) {
-                java.util.logging.Logger.getLogger(DefaultChatServer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        
+        try {
+            serverContext.setListener(ListenerFactory.createListener());
+            serverContext.getInputQueueSorter().start();
+            serverContext.getSystemExecutor().start();
+            serverContext.getChatExecutor().start();
+            serverContext.getListener().resume();
+            suspended = false;
+            started = true;
+        } catch (ChatServerConfigurationException ex) {
+            java.util.logging.Logger.getLogger(DefaultChatServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @Override

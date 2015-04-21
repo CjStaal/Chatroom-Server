@@ -20,6 +20,10 @@ public class SystemExecutor implements Runnable{
     
     private static SystemExecutor instance = null;
     
+    private Thread seThread;
+    
+    private boolean started = false;
+    
     private SystemExecutor(){
         systemQueue = SystemQueue.getInstance();
     }
@@ -50,5 +54,22 @@ public class SystemExecutor implements Runnable{
                 Logger.getLogger(SystemExecutor.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public void start(){
+        seThread = new Thread(this);
+        seThread.start();
+        started = true;
+    }
+    
+    public void stop(){
+        seThread.stop();
+        seThread = null;
+        started = false;
+    }
+    
+    public void resume(){
+        stop();
+        start();
     }
 }
