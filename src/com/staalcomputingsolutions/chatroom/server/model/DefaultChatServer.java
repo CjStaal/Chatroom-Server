@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultChatServer implements Server {
 
-    private final Logger log = LoggerFactory.getLogger(DefaultChatServer.class);
+    //private final Logger log = LoggerFactory.getLogger(DefaultChatServer.class);
     private final ChatServerContext serverContext;
 
     private boolean started = false;

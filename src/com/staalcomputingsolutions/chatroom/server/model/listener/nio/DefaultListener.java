@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultListener extends AbstractListener {
 
-    private final Logger log = LoggerFactory.getLogger(DefaultListener.class);
+    //private final Logger log = LoggerFactory.getLogger(DefaultListener.class);
 
     boolean suspended = false;
 
@@ -37,7 +37,7 @@ public class DefaultListener extends AbstractListener {
     @Override
     public synchronized void start(ChatServerContext context) {
         if (!isStopped()) {
-            throw new IllegalStateException("Listener alreadys started.");
+            throw new IllegalStateException("Listener already started.");
         }
         try {
             this.context = context;
@@ -48,7 +48,7 @@ public class DefaultListener extends AbstractListener {
             }
 
             acceptor = new SocketAcceptor(getPort(), context);
-            acceptorThread = new Thread();
+            acceptorThread = new Thread(acceptor);
             acceptorThread.start();
         } catch (RuntimeException ex) {
             stop();
@@ -73,7 +73,7 @@ public class DefaultListener extends AbstractListener {
     @Override
     public void suspend() {
         if(acceptor != null && !suspended){
-            log.debug("Suspending listener.");
+            //log.debug("Suspending listener.");
             acceptorThread.stop();
             acceptor = null;
             suspended = true;
@@ -83,7 +83,7 @@ public class DefaultListener extends AbstractListener {
     @Override
     public void resume() {
         if(acceptor != null && suspended){
-                log.debug("Resuming listener.");
+                //log.debug("Resuming listener.");
                 acceptor = new SocketAcceptor(getPort(), context);
                 acceptorThread = new Thread(acceptor);
                 acceptorThread.start();
