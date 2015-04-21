@@ -22,8 +22,9 @@ public class SocketAcceptor implements Runnable{
     private SystemQueue systemQueue;
     private ServerSocket ss;
     
-    public SocketAcceptor(ChatServerContext context){
-    }
+    private Thread acceptorThread;
+    
+    private boolean started = false;
 
     public SocketAcceptor(int port, ChatServerContext context) {
         this.systemQueue = context.getSystemQueue();
@@ -46,4 +47,19 @@ public class SocketAcceptor implements Runnable{
         }
     }
     
+    public void start(){
+        acceptorThread = new Thread(this);
+        acceptorThread.start();
+        started = true;
+    }
+    
+    public void stop(){
+        acceptorThread.stop();
+        acceptorThread = null;
+        started = false;
+    }
+    public void restart(){
+        stop();
+        start();
+    }
 }

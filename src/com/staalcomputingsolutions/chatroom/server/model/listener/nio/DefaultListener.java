@@ -15,16 +15,9 @@ import java.net.InetSocketAddress;
  */
 public class DefaultListener extends AbstractListener {
 
-
     boolean suspended = false;
 
-    private InetSocketAddress address;
-
-    private ChatServerContext context;
-
     private SocketAcceptor acceptor;
-
-    private Thread acceptorThread;
 
     public DefaultListener(String serverAddress, int port) {
         super(serverAddress, port);
@@ -34,30 +27,15 @@ public class DefaultListener extends AbstractListener {
     public synchronized void start(ChatServerContext context) {
         if (!isStopped()) {
             throw new IllegalStateException("Listener already started.");
-        }
-        try {
-            this.context = context;
-            if (getServerAddress() != null) {
-                address = new InetSocketAddress(getServerAddress(), getPort());
-            } else {
-                address = new InetSocketAddress(getPort());
-            }
-
+        } else {
             acceptor = new SocketAcceptor(getPort(), context);
-            acceptorThread = new Thread(acceptor);
-            acceptorThread.start();
-        } catch (RuntimeException ex) {
-            stop();
-            throw ex;
+            acceptor.start();
         }
     }
 
     @Override
     public void stop() {
-        if (acceptor != null) {
-            acceptor = null;
-            acceptorThread.stop();
-        }
+        acceptor.stop();
 
     }
 
@@ -68,20 +46,17 @@ public class DefaultListener extends AbstractListener {
 
     @Override
     public void suspend() {
-        if(acceptor != null && !suspended){
-            acceptorThread.stop();
-            acceptor = null;
+        if (acceptor != null && !suspended) {
+            acceptor.stop();
             suspended = true;
         }
     }
 
     @Override
     public void resume() {
-        if(acceptor != null && suspended){
-                acceptor = new SocketAcceptor(getPort(), context);
-                acceptorThread = new Thread(acceptor);
-                acceptorThread.start();
-                suspended = false;
+        if (acceptor != null && suspended) {
+            acceptor.start();
+            suspended = false;
         }
     }
 
