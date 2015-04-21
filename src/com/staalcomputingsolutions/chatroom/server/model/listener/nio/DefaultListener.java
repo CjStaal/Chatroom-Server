@@ -7,7 +7,6 @@ package com.staalcomputingsolutions.chatroom.server.model.listener.nio;
 
 import com.staalcomputingsolutions.chatroom.server.model.ChatServerContext;
 import com.staalcomputingsolutions.chatroom.server.model.listener.acceptor.SocketAcceptor;
-import java.net.InetSocketAddress;
 
 /**
  *
@@ -15,7 +14,7 @@ import java.net.InetSocketAddress;
  */
 public class DefaultListener extends AbstractListener {
 
-    boolean suspended = false;
+    boolean suspended = false, stopped = false;
 
     private SocketAcceptor acceptor;
 
@@ -36,12 +35,12 @@ public class DefaultListener extends AbstractListener {
     @Override
     public void stop() {
         acceptor.stop();
-
+        stopped = true;
     }
 
     @Override
     public boolean isStopped() {
-        return this.acceptor == null;
+        return !this.stopped;
     }
 
     @Override
