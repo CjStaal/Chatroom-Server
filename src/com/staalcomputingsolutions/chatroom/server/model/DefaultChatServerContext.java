@@ -63,4 +63,9 @@ public class DefaultChatServerContext implements ChatServerContext {
         this.listener = listener;
     }
 
+    @Override
+    public Listener getListener() {
+        return this.listener;
+    }
+
 }

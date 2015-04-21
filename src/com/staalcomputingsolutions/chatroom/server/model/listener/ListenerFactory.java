@@ -16,9 +16,9 @@ import java.net.UnknownHostException;
  */
 public class ListenerFactory {
     
-    private String serverAddress;
+    private static String serverAddress;
     
-    private int port = 1000;
+    private static int port = 1000;
     
     
     public ListenerFactory(){
@@ -30,7 +30,7 @@ public class ListenerFactory {
         port = listener.getPort();
     }
     
-    public Listener createListener() throws ChatServerConfigurationException {
+    public static Listener createListener() throws ChatServerConfigurationException {
         try{
             InetAddress.getByName(serverAddress);
         } catch (UnknownHostException ex){

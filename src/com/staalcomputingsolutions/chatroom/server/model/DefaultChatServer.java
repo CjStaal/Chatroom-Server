@@ -3,7 +3,10 @@
  */
 package com.staalcomputingsolutions.chatroom.server.model;
 
+import com.staalcomputingsolutions.chatroom.server.model.exceptions.ChatServerConfigurationException;
 import com.staalcomputingsolutions.chatroom.server.model.exceptions.ChatServerException;
+import com.staalcomputingsolutions.chatroom.server.model.listener.ListenerFactory;
+import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +20,7 @@ import org.slf4j.LoggerFactory;
 public class DefaultChatServer implements Server {
 
     private final Logger log = LoggerFactory.getLogger(DefaultChatServer.class);
-    private ChatServerContext serverContext;
+    private final ChatServerContext serverContext;
 
     private boolean started = false;
 
@@ -44,12 +47,26 @@ public class DefaultChatServer implements Server {
             iqsThread = new Thread(serverContext.getInputQueueSorter());
             seThread = new Thread(serverContext.getSystemExecutor());
             ceThread = new Thread(serverContext.getChatExecutor());
+            try {
+                serverContext.setListener(ListenerFactory.createListener());
+                started = true;
+                iqsThread.start();
+                seThread.start();
+                ceThread.start();
+                serverContext.getListener().start(serverContext);
+            } catch (ChatServerConfigurationException ex) {
+                java.util.logging.Logger.getLogger(DefaultChatServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public void stop() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        iqsThread.stop();
+        seThread.stop();
+        ceThread.stop();
+        serverContext.getListener().stop();
+        started = false;
     }
 
     @Override
@@ -59,12 +76,29 @@ public class DefaultChatServer implements Server {
 
     @Override
     public void suspend() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        iqsThread.stop();
+        seThread.stop();
+        ceThread.stop();
+        serverContext.getListener().suspend();
+        suspended = true;
     }
 
     @Override
     public void resume() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            iqsThread = new Thread(serverContext.getInputQueueSorter());
+            seThread = new Thread(serverContext.getSystemExecutor());
+            ceThread = new Thread(serverContext.getChatExecutor());
+            try {
+                serverContext.setListener(ListenerFactory.createListener());
+                started = true;
+                iqsThread.start();
+                seThread.start();
+                ceThread.start();
+                serverContext.getListener().resume();
+            } catch (ChatServerConfigurationException ex) {
+                java.util.logging.Logger.getLogger(DefaultChatServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
     }
 
     @Override

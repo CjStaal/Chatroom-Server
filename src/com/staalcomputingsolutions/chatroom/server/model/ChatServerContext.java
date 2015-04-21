@@ -29,5 +29,7 @@ public interface ChatServerContext {
     public InputQueueSorter getInputQueueSorter();
     public void setListener(Listener listener);
     
+    public Listener getListener();
+    
     
 }
