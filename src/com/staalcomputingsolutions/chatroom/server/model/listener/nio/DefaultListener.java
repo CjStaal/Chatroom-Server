@@ -7,10 +7,7 @@ package com.staalcomputingsolutions.chatroom.server.model.listener.nio;
 
 import com.staalcomputingsolutions.chatroom.server.model.ChatServerContext;
 import com.staalcomputingsolutions.chatroom.server.model.listener.acceptor.SocketAcceptor;
-import java.io.IOException;
 import java.net.InetSocketAddress;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -18,7 +15,6 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultListener extends AbstractListener {
 
-    //private final Logger log = LoggerFactory.getLogger(DefaultListener.class);
 
     boolean suspended = false;
 
@@ -73,7 +69,6 @@ public class DefaultListener extends AbstractListener {
     @Override
     public void suspend() {
         if(acceptor != null && !suspended){
-            //log.debug("Suspending listener.");
             acceptorThread.stop();
             acceptor = null;
             suspended = true;
@@ -83,7 +78,6 @@ public class DefaultListener extends AbstractListener {
     @Override
     public void resume() {
         if(acceptor != null && suspended){
-                //log.debug("Resuming listener.");
                 acceptor = new SocketAcceptor(getPort(), context);
                 acceptorThread = new Thread(acceptor);
                 acceptorThread.start();

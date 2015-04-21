@@ -7,8 +7,6 @@ import com.staalcomputingsolutions.chatroom.server.model.exceptions.ChatServerCo
 import com.staalcomputingsolutions.chatroom.server.model.exceptions.ChatServerException;
 import com.staalcomputingsolutions.chatroom.server.model.listener.ListenerFactory;
 import java.util.logging.Level;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*
  * Copyright [2015] [Charles Joseph Staal]
@@ -19,7 +17,6 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultChatServer implements Server {
 
-    //private final Logger log = LoggerFactory.getLogger(DefaultChatServer.class);
     private final ChatServerContext serverContext;
 
     private boolean started = false;
