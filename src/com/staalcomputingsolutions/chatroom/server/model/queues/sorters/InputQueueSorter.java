@@ -6,7 +6,7 @@ package com.staalcomputingsolutions.chatroom.server.model.queues.sorters;
 import com.staalcomputingsolutions.chatroom.server.model.queues.OutputQueue;
 import com.staalcomputingsolutions.chatroom.server.model.queues.InputQueue;
 import com.staalcomputingsolutions.chatroom.server.model.queues.SystemQueue;
-import com.staalcomputingsolutions.chatroom.server.model.ChatRoom3;
+import com.staalcomputingsolutions.chatroom.server.model.DefaultServer;
 import com.staalcomputingsolutions.chatroom.server.model.queues.messages.Message;
 import com.staalcomputingsolutions.chatroom.server.model.queues.messages.parsers.MessageParser;
 import java.util.logging.Level;
@@ -36,7 +36,7 @@ public class InputQueueSorter implements Runnable{
     }
     @Override
     public void run() {
-        while(ChatRoom3.isRunning()){
+        while(DefaultServer.isRunning()){
             if(!inputQueue.isEmpty()){
                 try {
                     Message m = inputQueue.take();

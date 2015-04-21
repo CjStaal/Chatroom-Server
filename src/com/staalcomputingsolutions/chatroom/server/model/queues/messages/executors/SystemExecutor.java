@@ -7,7 +7,7 @@ import com.staalcomputingsolutions.chatroom.server.model.commands.LoginModule;
 import com.staalcomputingsolutions.chatroom.server.model.commands.LogoutModule;
 import com.staalcomputingsolutions.chatroom.server.model.queues.messages.SystemMessage;
 import com.staalcomputingsolutions.chatroom.server.model.queues.SystemQueue;
-import com.staalcomputingsolutions.chatroom.server.model.ChatRoom3;
+import com.staalcomputingsolutions.chatroom.server.model.DefaultServer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +35,7 @@ public class SystemExecutor implements Runnable{
     @Override
     public void run() {
         SystemMessage sm;
-        while(ChatRoom3.isRunning()){
+        while(DefaultServer.isRunning()){
             if(!systemQueue.isEmpty())
                 try {
                     sm = systemQueue.take();
