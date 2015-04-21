@@ -1,9 +1,6 @@
 package com.staalcomputingsolutions.chatroom.server.model.listener;
 
-
-import com.staalcomputingsolutions.chatroom.server.model.ServerContext;
-import java.net.InetAddress;
-
+import com.staalcomputingsolutions.chatroom.server.model.ChatServerContext;
 
 /**
  * Interface for the component responsible for waiting for incoming socket
@@ -17,10 +14,11 @@ public interface Listener {
      * Start the listener, will initiate the listener waiting on the socket. The
      * method should not return until the listener has started accepting socket
      * requests.
-     * @param serverContext The current {@link ServerContext}
-     * 
+     *
+     * @param serverContext The current {@link ChatServerContext}
+     *
      */
-    void start(ServerContext serverContext);
+    void start(ChatServerContext serverContext);
 
     /**
      * Stop the listener, it should no longer accept socket requests. The method
@@ -31,7 +29,7 @@ public interface Listener {
 
     /**
      * Checks if the listener is currently started.
-     * 
+     *
      * @return False if the listener is started
      */
     boolean isStopped();
@@ -51,28 +49,12 @@ public interface Listener {
 
     /**
      * Checks if the listener is currently suspended
-     * 
+     *
      * @return True if the listener is suspended
      */
     boolean isSuspended();
 
-    
+    public String getServerAddress();
 
-    /**
-     * Get the port on which this listener is waiting for requests. For
-     * listeners where the port is automatically assigned, this will return the
-     * bound port.
-     * 
-     * @return The port
-     */
-    int getPort();
-
-    /**
-     * Get the {@link InetAddress} used for binding the local socket. Defaults
-     * to null, that is, the server binds to all available network interfaces
-     * 
-     * @return The local socket {@link InetAddress}, if set
-     */
-    String getServerAddress();
-
+    public int getPort();
 }

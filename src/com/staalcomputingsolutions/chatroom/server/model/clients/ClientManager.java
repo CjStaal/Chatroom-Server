@@ -5,7 +5,6 @@ package com.staalcomputingsolutions.chatroom.server.model.clients;
 
 import com.staalcomputingsolutions.chatroom.server.model.queues.messages.ChatMessage;
 import com.staalcomputingsolutions.chatroom.server.model.queues.InputQueue;
-import com.staalcomputingsolutions.chatroom.server.model.DefaultServer;
 import com.staalcomputingsolutions.chatroom.server.model.queues.messages.Message;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -139,7 +138,7 @@ public class ClientManager {
         @Override
         public synchronized void run() {
             DataInputStream dataInputStream;
-            while (DefaultServer.isRunning()) {
+            while (true) {
                 UserConnection uc;
                 for (String uuid : privateUUIDToConnection.keySet()) {
                     uc = privateUUIDToConnection.get(uuid);

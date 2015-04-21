@@ -5,6 +5,7 @@
  */
 package com.staalcomputingsolutions.chatroom.server.model.listener;
 
+import com.staalcomputingsolutions.chatroom.server.model.exceptions.ChatServerConfigurationException;
 import com.staalcomputingsolutions.chatroom.server.model.listener.nio.DefaultListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;

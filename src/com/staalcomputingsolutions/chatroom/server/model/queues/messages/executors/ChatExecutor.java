@@ -5,7 +5,6 @@
  */
 package com.staalcomputingsolutions.chatroom.server.model.queues.messages.executors;
 
-import com.staalcomputingsolutions.chatroom.server.model.DefaultServer;
 import com.staalcomputingsolutions.chatroom.server.model.clients.ClientManager;
 import com.staalcomputingsolutions.chatroom.server.model.queues.OutputQueue;
 import com.staalcomputingsolutions.chatroom.server.model.queues.messages.ChatMessage;
@@ -40,7 +39,7 @@ public class ChatExecutor implements Runnable{
     
     @Override
     public void run() {
-        while(DefaultServer.isRunning()){
+        while(true){
             if(!outputQueue.isEmpty()){
                 try {
                     ChatMessage cm = outputQueue.take();

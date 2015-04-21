@@ -3,6 +3,7 @@
  */
 package com.staalcomputingsolutions.chatroom.server.model;
 
+import com.staalcomputingsolutions.chatroom.server.model.exceptions.ChatServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,19 +17,21 @@ import org.slf4j.LoggerFactory;
 public class DefaultChatServer implements Server {
 
     private final Logger log = LoggerFactory.getLogger(DefaultChatServer.class);
-    private ServerContext serverContext;
+    private ChatServerContext serverContext;
 
     private boolean started = false;
 
     private boolean suspended = false;
 
+    private Thread iqsThread, seThread, ceThread;
+    
     /**
      * Internal constructor, do not use directly. Use {@link ChatServerFactory}
      * instead
      *
      * @param serverContext
      */
-    public DefaultChatServer(ServerContext serverContext) {
+    public DefaultChatServer(ChatServerContext serverContext) {
         this.serverContext = serverContext;
     }
 
@@ -37,6 +40,10 @@ public class DefaultChatServer implements Server {
         if (serverContext == null) {
             // The chat server already been stopped, can not be restarted.
             throw new IllegalStateException("ChatServer has been stopped. Restart is not supported");
+        } else {
+            iqsThread = new Thread(serverContext.getInputQueueSorter());
+            seThread = new Thread(serverContext.getSystemExecutor());
+            ceThread = new Thread(serverContext.getChatExecutor());
         }
     }
 
@@ -65,7 +72,7 @@ public class DefaultChatServer implements Server {
         return this.suspended;
     }
 
-    public ServerContext getServerContext() {
+    public ChatServerContext getServerContext() {
         return this.serverContext;
     }
 

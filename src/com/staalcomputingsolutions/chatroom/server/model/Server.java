@@ -1,4 +1,7 @@
 package com.staalcomputingsolutions.chatroom.server.model;
+
+import com.staalcomputingsolutions.chatroom.server.model.exceptions.ChatServerException;
+
 /**
  * This is the starting point of all the servers. It invokes a new listener
  * thread. <code>Server</code> implementation is used to create the server

@@ -1,4 +1,4 @@
-package com.staalcomputingsolutions.chatroom.server.model;
+package com.staalcomputingsolutions.chatroom.server.model.exceptions;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -10,7 +10,7 @@ package com.staalcomputingsolutions.chatroom.server.model;
  *
  * @author Charles
  */
-class ChatServerException extends Exception {
+public class ChatServerException extends Exception {
     
     /**
      * Default constructor.
@@ -20,7 +20,7 @@ class ChatServerException extends Exception {
     }
 
     /**
-     * Constructs a <code>FtpException</code> object with a message.
+     * Constructs a <code>ChatServerException</code> object with a message.
      * 
      * @param msg
      *            a description of the exception
@@ -30,7 +30,7 @@ class ChatServerException extends Exception {
     }
 
     /**
-     * Constructs a <code>FtpException</code> object with a
+     * Constructs a <code>ChatServerException</code> object with a
      * <code>Throwable</code> cause.
      * 
      * @param th
